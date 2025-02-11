@@ -473,37 +473,7 @@ function gotData(data) {
   descriptionText.html(
     `<b>Mediona, Alt Penedès</b>.<br>${weather.coord.lon}, ${weather.coord.lat}<br><br><b id="capitalize">${description}</b>.<br>Velocitat del vent: ${windSpeed} m/s<br>Pluja: ${rain}<br>Humitat: ${humidity} %<br>Nuvolositat: ${clouds} %%<br>Temp: ${temp} ℃.`
   );
-
-
-  if (temp <= 5) {
-    tempR = 90;
-    tempG = 75;
-    tempB = 255;
-    tempSR = 245;
-    tempSG = 240;
-    tempSB = 235;
-  } else if (temp > 5 && temp <= 15) {
-    tempR = 255;
-    tempG = 164;
-    tempB = 205;
-    tempSR = 165;
-    tempSG = 160;
-    tempSB = 155;
-  } else if (temp > 15 && temp <= 30) {
-    tempR = 255;
-    tempG = 250;
-    tempB = 0;
-    tempSR = 76;
-    tempSG = 99;
-    tempSB = 89;
-  } else if (temp > 30) {
-    tempR = 255;
-    tempG = 90;
-    tempB = 0;
-    tempSR = 45;
-    tempSG = 45;
-    tempSB = 45;
-  }
+  setColor(slider6.value());
   slider6Label.html(`<b>Temperatura</b> ${temp}º`);
 
   drawText();
