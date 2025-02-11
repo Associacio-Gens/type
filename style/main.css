@@ -85,7 +85,7 @@ header div {
   backdrop-filter: blur(4px);
 }
 
-#controls #export,
+
 #controls #design {
   flex: 1 1 auto;
 }
@@ -95,7 +95,7 @@ header div {
 }
 
 #blackOutline  {
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 0px;
 }
 
@@ -105,13 +105,16 @@ header div {
 }
 
 #inputText {
-  background-color: rgb(230, 230, 230);
+  background-color: transparent;
   width: 160px;
-  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 0.75px black solid;
   box-shadow: none !important;
   outline: none !important;
-  font-size: 12px;
-  padding: 6px 8px;
+  font-size: 16px;
+  padding: 6px 8px 6px 4px;
   transition: background-color 0.2s;
 }
 
@@ -120,6 +123,7 @@ a {
 }
 
 button {
+  width: 100px !important;
   background-color: rgb(230, 230, 230);
   padding: 6px 8px;
   outline: none;
@@ -144,11 +148,11 @@ button span {
 
 button:hover,
 #inputText:hover {
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(245, 245, 245);
 }
 
 #inputText:focus {
-  background-color: rgb(210, 210, 210);
+  background-color: rgb(235, 235, 235);
 }
 
 #export {
@@ -157,7 +161,6 @@ button:hover,
 }
 
 #export button {
-  width: max-content;
   margin-bottom: 4px;
 }
 
@@ -172,9 +175,17 @@ h2 {
 #weather #body div {
   display: flex;
   flex-direction: row;
-  padding-bottom: 10px;
   align-items: flex-start;
 }
+
+#weather #body div:nth-child(odd) {
+  padding-bottom: 20px;
+  padding-top: 10px;
+}  
+
+#weather #body div:nth-child(even) {
+  padding-bottom: 0;
+}  
 
 #weather label {
   width: 70px;
@@ -249,8 +260,13 @@ input[type="range"]:focus::-moz-range-thumb{
 }
 
 @media only screen and (min-width: 1400px) {
+  #inputText {
+    width: 15vw;
+  }
+
+
   input[type="range"] {
-    width: 20vw;
+    width: 18vw;
   }
 }
 
