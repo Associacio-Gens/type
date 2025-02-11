@@ -471,7 +471,7 @@ function gotData(data) {
 
   // SETTING DESCRIPTION AT THE TOP
   descriptionText.html(
-    `<b><a href="https://openweathermap.org/technology" target="_blank">Mediona, Alt Penedès</a></b>. ${description}.<br>Long:${weather.coord.lon} Lat: ${weather.coord.lat}  Temp: ${temp} ℃. Humitat: ${humidity} %.<br>Nuvolositat: ${clouds} %. Velocitat del vent: ${windSpeed} m/s.`
+    `<b>Mediona, Alt Penedès</b>.<br>${weather.coord.lon}, ${weather.coord.lat}<br><br><b id="capitalize">${description}</b>.<br>Velocitat del vent: ${windSpeed} m/s<br>Pluja: ${rain}<br>Humitat: ${humidity} %<br>Nuvolositat: ${clouds} %%<br>Temp: ${temp} ℃.`
   );
 
 
@@ -556,41 +556,53 @@ function updateSlider5() {
 }
 
 function updateSlider6() {
-  temp = slider6.value();
-  if (temp <= 5) {
-    tempR = 90;
-    tempG = 75;
-    tempB = 255;
-    tempSR = 245;
-    tempSG = 240;
-    tempSB = 235;
-  } else if (temp > 5 && temp <= 15) {
-    tempR = 255;
-    tempG = 164;
-    tempB = 205;
-    tempSR = 165;
-    tempSG = 160;
-    tempSB = 155;
-  } else if (temp > 15 && temp <= 30) {
-    tempR = 255;
-    tempG = 250;
-    tempB = 0;
-    tempSR = 76;
-    tempSG = 99;
-    tempSB = 89;
-  } else if (temp > 30) {
-    tempR = 255;
-    tempG = 90;
-    tempB = 0;
-    tempSR = 45;
-    tempSG = 45;
-    tempSB = 45;
-  }
+  setColor(slider6.value());
+
   for (p of drawingPoints) {
     p.changeColor();
   }
-  slider6Label.html(`<b>Temperatura</b> ${temp}º`);
+  slider6Label.html(`<b>Temperatura</b> ${slider6.value()}º`);
   loop();
+}
+
+
+
+function setColor(temp) {
+  const colorStops = [
+    { temp: -5,  fill: [90, 75, 255],  stroke: [245, 240, 235] },
+    { temp: 15, fill: [255, 164, 205], stroke: [165, 160, 155] },
+    { temp: 30, fill: [255, 250, 0],   stroke: [76, 99, 89] },
+    { temp: 45, fill: [255, 90, 0],    stroke: [45, 45, 45] }
+];
+
+// Find the two surrounding color stops
+let lower = colorStops[0], upper = colorStops[colorStops.length - 1];
+for (let i = 0; i < colorStops.length - 1; i++) {
+    if (temp >= colorStops[i].temp && temp <= colorStops[i + 1].temp) {
+        lower = colorStops[i];
+        upper = colorStops[i + 1];
+        break;
+    }
+}
+
+// Calculate interpolation factor (0 to 1)
+const range = upper.temp - lower.temp;
+const factor = range === 0 ? 0 : (temp - lower.temp) / range;
+
+// Interpolate fill RGB values
+tempR = Math.round(lower.fill[0] + factor * (upper.fill[0] - lower.fill[0]));
+tempG = Math.round(lower.fill[1] + factor * (upper.fill[1] - lower.fill[1]));
+tempB = Math.round(lower.fill[2] + factor * (upper.fill[2] - lower.fill[2]));
+
+// Interpolate stroke RGB values
+tempSR = Math.round(lower.stroke[0] + factor * (upper.stroke[0] - lower.stroke[0]));
+tempSG = Math.round(lower.stroke[1] + factor * (upper.stroke[1] - lower.stroke[1]));
+tempSB = Math.round(lower.stroke[2] + factor * (upper.stroke[2] - lower.stroke[2]));
+
+}
+
+function saveCanvas() {
+  save();
 }
 
 function saveThis() {
