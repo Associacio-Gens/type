@@ -15,7 +15,7 @@ p5.disableFriendlyErrors = true;
 
 let letters = [];  // LIST OF SHAPES
 let inputTextFocus;
-let cnv;
+let canvas;
 
 // VARIABLES FOR FONT PRELOADING
 let font;
@@ -97,8 +97,11 @@ function setup() {
   let url =
     "https://api.openweathermap.org/data/2.5/weather?lat=41.47394756042913&lon=1.61413424614867&appid=49825ff466b207391d701124b9f22ede&units=metric&lang=ca";
 
-  cnv = createCanvas(windowWidth, windowHeight);
-
+    canvas = createCanvas(windowWidth, windowHeight);
+    
+    canvas.elt.addEventListener("mousedown", canvasMousePressed);
+    canvas.elt.addEventListener("mouseup", canvasMouseReleased);
+    canvas.elt.addEventListener("mousemove", canvasMouseDragged);
    
   frameRate(30);
   colorMode(RGB);
@@ -157,8 +160,8 @@ function draw() {
   inputTextFocus = document.getElementById("inputText");
 }
 
-function mousePressed() {
-  if (mouseX > startX && mouseX < startX + wordWidth) {
+function canvasMousePressed(event) {
+  if (event.target === canvas.elt && mouseX > startX && mouseX < startX + wordWidth) {
     isDragging = true;
     dragStartX = mouseX; // Record where the drag started
     initialStartX = startX; // Save the original startX
@@ -167,15 +170,14 @@ function mousePressed() {
   }
 }
 
-function mouseDragged() {
-  // Only start dragging if the mouse is within the text bounds
-  if (mouseX > startX && mouseX < startX + wordWidth) {
+function canvasMouseDragged(event) {
+  if (isDragging) {
     console.log("dragging");
     drawText();
   }
 }
 
-function mouseReleased() {
+function canvasMouseReleased(event) {
   console.log("stopped");
   isDragging = false; // Stop dragging when the mouse is released
 }
@@ -183,6 +185,10 @@ function mouseReleased() {
 
 function ns(x, y, z, scale_, min_, max_) {
   return map(noise(x * scale_, y * scale_, z * scale_), 0, 1, min_, max_);
+}
+
+function isMouseOnCanvas() {
+  return mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height;
 }
 
 let tempR, tempG, tempB, tempSR, tempSG, tempSB;
